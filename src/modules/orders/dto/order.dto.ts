@@ -3,6 +3,9 @@ import { IsDateString, IsNotEmpty } from "class-validator";
 
 export class OrderDto {
     @IsNotEmpty()
+    product_name: string;
+
+    @IsNotEmpty()
     customer_id: number;
 
     @IsNotEmpty()

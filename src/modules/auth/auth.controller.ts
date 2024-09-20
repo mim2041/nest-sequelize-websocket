@@ -9,7 +9,7 @@ import { DoesUserExist } from "src/core/guards/doesUserExist.guard";
 export class AuthController {
     constructor(private authService: AuthService) { }
 
-    @UseGuards(AuthGuard('local'))
+    // @UseGuards(AuthGuard('local'))
     @Post('login')
     async login(@Body() user: any) {
         return this.authService.login(user);

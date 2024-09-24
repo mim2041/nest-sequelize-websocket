@@ -4,11 +4,7 @@ import { User } from "../users/user.entity";
 
 @Table
 export class Order extends Model<Order> {
-    @Column({
-        type: DataType.STRING,
-        allowNull: false,
-    })
-    product_name: string;
+    
 
     @ForeignKey(() => User)
     @Column({

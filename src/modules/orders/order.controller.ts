@@ -36,7 +36,7 @@ export class OrderController {
         return await this.orderService.create(post, req.user.id);
     }
 
-    @UseGuards(AuthGuard('jwt'))
+    // @UseGuards(AuthGuard('jwt'))
     @Put(':id')
     async update(@Param('id') id: number, @Body() post: OrderDto, @Request() req): Promise<OrderEntity> {
         // get the number of row affected and the updated post
@@ -52,7 +52,7 @@ export class OrderController {
         return updatedOrder;
     }
 
-    @UseGuards(AuthGuard('jwt'))
+    // @UseGuards(AuthGuard('jwt'))
     @Delete(':id')
     async remove(@Param('id') id: number, @Request() req) {
         // delete the post with this id

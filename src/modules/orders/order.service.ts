@@ -9,19 +9,29 @@ export class OrderService {
     constructor(@Inject(ORDERS_REPOSITORY) private readonly orderRepository: typeof Order) { }
 
     async create(order: OrderDto, customer_id: number): Promise<Order> {
-        return await this.orderRepository.create<Order>({ ...order, customer_id });
+        try{
+            return await this.orderRepository.create<Order>({ ...order, customer_id });
+        }
+        catch(error){
+            throw new Error(`Error: ${error.message}`);
+        }
     }
 
     async findOneById(id: number): Promise<Order> {
-        return await this.orderRepository.findOne<Order>({
-            where: { id } ,
-            include: [{ model: Order, attributes: { exclude: ['password']}}]
-        });
+        try{
+            return await this.orderRepository.findOne<Order>({
+                where: { id },
+                attributes: { exclude: ['password'] },
+            });
+        }
+        catch(error){
+            throw new Error(`Error: ${error.message}`);
+        }
     }
 
     async findAll(): Promise<Order[]> {
         return await this.orderRepository.findAll<Order> ({
-            include: [{ model: Order, attributes: { exclude: ['password']}}]
+            attributes: { exclude: ['password'] }
         });
     }
 
@@ -29,10 +39,19 @@ export class OrderService {
         return await this.orderRepository.destroy({ where: { id, customer_id } });
     }
 
-    async update(id, data, customer_id ) {
-        const [ numberOfAffectedRows, [updatedOrder]] = await this.orderRepository.update({ ...data}, { where: { id, customer_id }, returning: true});
-
-        return { numberOfAffectedRows, updatedOrder };
+    async update(id: number, data: Partial<OrderDto>, customer_id: number): Promise<{ numberOfAffectedRows: number, updatedOrder: Order }> {
+        try {
+            const [numberOfAffectedRows, [updatedOrder]] = await this.orderRepository.update(
+                { ...data },
+                { where: { id, customer_id }, returning: true }
+            );
+            console.log(id, customer_id);
+            return { numberOfAffectedRows, updatedOrder };
+        } catch (error) {
+            console.error(`Error updating order with id ${id}:`, error);
+            throw new Error(`Error updating order with id ${ id }: ${ error.message }`);
+        }
     }
+
 }
 

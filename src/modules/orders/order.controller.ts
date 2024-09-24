@@ -36,7 +36,7 @@ export class OrderController {
         return await this.orderService.create(post, req.user.id);
     }
 
-    // @UseGuards(AuthGuard('jwt'))
+    @UseGuards(AuthGuard('jwt'))
     @Put(':id')
     async update(@Param('id') id: number, @Body() post: OrderDto, @Request() req): Promise<OrderEntity> {
         // get the number of row affected and the updated post
@@ -45,14 +45,14 @@ export class OrderController {
         // if the number of row affected is zero, 
         // it means the post doesn't exist in our db
         if (numberOfAffectedRows === 0) {
-            throw new NotFoundException('This Post doesn\'t exist');
+            throw new NotFoundException('This Order doesn\'t exist');
         }
 
         // return the updated post
         return updatedOrder;
     }
 
-    // @UseGuards(AuthGuard('jwt'))
+    @UseGuards(AuthGuard('jwt'))
     @Delete(':id')
     async remove(@Param('id') id: number, @Request() req) {
         // delete the post with this id
